@@ -1,38 +1,54 @@
+# library_system.py
+
 class Book:
-    def __init__(self, title, author, year):
+    def __init__(self, title, author, publication_year):
         self.title = title
         self.author = author
-        self.year = year
+        self.publication_year = publication_year
 
     def __str__(self):
-        return f'"{self.title}" by {self.author} ({self.year})'
+        return f"{self.title} by {self.author} ({self.publication_year})"
 
+class EBook(Book):
+    def __init__(self, title, author, publication_year, file_size):
+        super().__init__(title, author, publication_year)
+        self.file_size = file_size
+
+    def __str__(self):
+        return f"EBook: {super().__str__()} - File Size: {self.file_size}MB"
+
+class PrintBook(Book):
+    def __init__(self, title, author, publication_year, weight):
+        super().__init__(title, author, publication_year)
+        self.weight = weight
+
+    def __str__(self):
+        return f"PrintBook: {super().__str__()} - Weight: {self.weight}kg"
 
 class Library:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
         self.books = []
 
     def add_book(self, book):
         self.books.append(book)
 
-    def list_books(self):
+    def display_books(self):
         if not self.books:
-            return "No books in the library."
-        return "\n".join(str(book) for book in self.books)
+            print("The library has no books.")
+        else:
+            for book in self.books:
+                print(book)
 
-    def __str__(self):
-        return f'Library: {self.name} with {len(self.books)} book(s)'
 
+# main.py
+from library_system import EBook, PrintBook, Library
 
-# Example usage
-if __name__ == "__main__":
-    library = Library("City Central Library")
-    book1 = Book("1984", "George Orwell", 1949)
-    book2 = Book("To Kill a Mockingbird", "Harper Lee", 1960)
+library = Library()
 
-    library.add_book(book1)
-    library.add_book(book2)
+ebook = EBook("Python 101", "John Doe", 2020, 5)
+printbook = PrintBook("Data Structures", "Jane Smith", 2018, 1.2)
 
-    print(library)         # Summary of the library
-    print(library.list_books())  # Detailed list of books
+library.add_book(ebook)
+library.add_book(printbook)
+
+library.display_books()
